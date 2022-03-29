@@ -188,3 +188,4 @@ We finally made it! To deploy your app to Heroku run
 git push heroku main
 ```
 and thats it!
+# geoChat
