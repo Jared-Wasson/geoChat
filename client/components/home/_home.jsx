@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { ApiContext } from '../../utils/api_context';
 import { Button } from '../common/button';
 import { Link } from 'react-router-dom';
+import { Paper } from '../common/paper';
 
 
 export const Home = () => {
@@ -43,8 +44,6 @@ export const Home = () => {
     //console.log(chatRooms);
     //setChatRooms(chatRooms);
 
-    //get current pos geo
-
     navigator.geolocation.getCurrentPosition((userLocation) => {
       setlng(userLocation.coords.longitude);
       setlat(userLocation.coords.latitude);
@@ -69,6 +68,8 @@ export const Home = () => {
       setRoomsInRange(availableRooms);
     });
 
+  
+
   setUser(res.user);
     setLoading(false);
 
@@ -81,21 +82,35 @@ export const Home = () => {
   }
 
   const createRoom = async () => {
+    if (name === '') {
+      return;
+    }
     const { chatRoom } = await api.post('/chat_rooms', { name, lat, lng });
     setRoomsInRange([...roomsInRange, chatRoom]);
     setName('');
   };
 
+  const refreshPage = () => {
+    window.location.reload();
+  };
+
 
   return (
-    <div className="p-4">
+    <div className="background">
+      <div className="header">
       <h1>Welcome {user.firstName}</h1>
-      <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-      <Button onClick={createRoom}>Create Room</Button>
+      </div>
+      <div className="line-5"></div>
+      <input className="glowing-border " type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter new chat room"/>
+      <button className='button1 button' onClick={createRoom}>Create</button>
+      <button className='button1 button' onClick={refreshPage}>Refresh Available Rooms</button>
+      <div className="line-5"></div>
+      <p className='header2'>Available Chat Rooms</p>
+      <div className="line-5"></div>
       <div>
         {roomsInRange.map((room) => (
           <div key={room.id}>
-            <Link to={`/chat_rooms/${room.id}`}>{room.name}</Link>
+            <Link className="paper" to={`/chat_rooms/${room.id}`}>{room.name}</Link>
           </div>
         ))}
       </div>
