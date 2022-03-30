@@ -12,6 +12,7 @@ export const Home = () => {
   const [chatRooms, setChatRooms] = useState([]);
   const [lng, setlng] = useState([]);
   const [lat, setlat] = useState([]);
+  const [roomsInRange, setRoomsInRange] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -37,30 +38,42 @@ export const Home = () => {
 
 
   useEffect(async () => {
-    let roomsInRange = [];
     const res = await api.get('/users/me');
     const { chatRooms } = await api.get('/chat_rooms');
     //console.log(chatRooms);
     //setChatRooms(chatRooms);
 
-    navigator.geolocation.getCurrentPosition(userLocation => {
+    //get current pos geo
+
+    navigator.geolocation.getCurrentPosition((userLocation) => {
+      setlng(userLocation.coords.longitude);
+      setlat(userLocation.coords.latitude);
+
+      const availableRooms = chatRooms.filter(room => {
+        return getDistanceFromLatLonInKm(room.lat, room.lng, userLocation.coords.latitude, userLocation.coords.longitude) <= 5;
+      });
+    
+      setRoomsInRange(availableRooms)
+
+    });
+
+
+    const watch = navigator.geolocation.watchPosition((userLocation)=>{
       setlat(userLocation.coords.latitude);
       setlng(userLocation.coords.longitude);
-  });
 
-  (chatRooms).forEach(room =>{
-    let distance = getDistanceFromLatLonInKm(lat, lng, room.lat, room.lng);
-    if(distance <= 5){
-      roomsInRange.push(room);
-    }
-  
-  });
-  console.log(roomsInRange);
-  setChatRooms(roomsInRange);
-
+      const availableRooms = chatRooms.filter(room => {
+        return getDistanceFromLatLonInKm(room.lat, room.lng, userLocation.coords.latitude, userLocation.coords.longitude) <= 5;
+      });
+    
+      setRoomsInRange(availableRooms);
+    });
 
   setUser(res.user);
     setLoading(false);
+
+  console.log("use effect called");
+    return () => navigator.geolocation.clearWatch(watch);
   }, []);
 
   if (loading) {
@@ -69,9 +82,10 @@ export const Home = () => {
 
   const createRoom = async () => {
     const { chatRoom } = await api.post('/chat_rooms', { name, lat, lng });
-    setChatRooms([...chatRooms, chatRoom]);
+    setRoomsInRange([...roomsInRange, chatRoom]);
     setName('');
   };
+
 
   return (
     <div className="p-4">
@@ -79,9 +93,9 @@ export const Home = () => {
       <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
       <Button onClick={createRoom}>Create Room</Button>
       <div>
-        {chatRooms.map((chatRoom) => (
-          <div key={chatRoom.id}>
-            <Link to={`/chat_rooms/${chatRoom.id}`}>{chatRoom.name}</Link>
+        {roomsInRange.map((room) => (
+          <div key={room.id}>
+            <Link to={`/chat_rooms/${room.id}`}>{room.name}</Link>
           </div>
         ))}
       </div>
