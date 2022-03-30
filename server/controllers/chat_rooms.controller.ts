@@ -3,8 +3,11 @@ import { ChatRoom } from 'server/entities/chat_room.entity';
 import { ChatRoomsService } from 'server/providers/services/chat_rooms.service';
 import * as crypto from 'crypto';
 
+
 class ChatRoomBody {
   name: string;
+  lat: number;
+  lng: number;
 }
 
 @Controller()
@@ -27,6 +30,8 @@ export class ChatRoomsController {
   async create(@Body() body: ChatRoomBody) {
     let chatRoom = new ChatRoom();
     chatRoom.name = body.name;
+    chatRoom.lat = body.lat;
+    chatRoom.lng = body.lng;
     chatRoom.roomkey = crypto.randomBytes(8).toString('hex');
     chatRoom = await this.chatRoomsService.create(chatRoom);
     return { chatRoom };

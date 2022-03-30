@@ -12,7 +12,7 @@ export class ChatRoomsService {
 
   findAll(): Promise<ChatRoom[]> {
     return this.chatRoomRepository.find();
-  }
+}
 
   findOne(id: number): Promise<ChatRoom> {
     return this.chatRoomRepository.findOne(id);
