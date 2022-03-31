@@ -36,8 +36,6 @@ export class PingGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     try {
       const jwt = client.handshake.auth.token;
       const jwtBody = this.jwtService.parseToken(jwt);
-      console.log(client.handshake.query);
-      console.log('Client Connected: ', jwtBody.userId);
     } catch (e) {
       throw new WsException('Invalid token');
     }

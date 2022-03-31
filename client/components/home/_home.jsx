@@ -41,8 +41,6 @@ export const Home = () => {
   useEffect(async () => {
     const res = await api.get('/users/me');
     const { chatRooms } = await api.get('/chat_rooms');
-    //console.log(chatRooms);
-    //setChatRooms(chatRooms);
 
     navigator.geolocation.getCurrentPosition((userLocation) => {
       setlng(userLocation.coords.longitude);
@@ -73,7 +71,6 @@ export const Home = () => {
   setUser(res.user);
     setLoading(false);
 
-  console.log("use effect called");
     return () => navigator.geolocation.clearWatch(watch);
   }, []);
 

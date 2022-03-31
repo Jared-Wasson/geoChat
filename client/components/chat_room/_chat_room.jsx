@@ -13,7 +13,6 @@ export const ChatRoom = () => {
   const [user, setUser] = useState(null);
   const api = useContext(ApiContext);
   const { id } = useParams();
-  console.log(id);
   const [messages, sendMessage] = useMessages(chatRoom);
 
   useEffect(async () => {

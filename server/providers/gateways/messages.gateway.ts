@@ -33,10 +33,8 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
 
   async handleConnection(client: any, ...args: any[]) {
     try {
-      console.log('Client connected');
       const jwt = client.handshake.auth.token;
       this.jwtService.parseToken(jwt);
-      console.log(client.handshake.query);
       client.join(client.handshake.query.chatRoomId as unknown as string);
       const messages = await this.messagesService.findAllForRoom(client.handshake.query.chatRoomId);
       client.emit('initial-messages', messages);

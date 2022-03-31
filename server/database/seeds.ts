@@ -10,7 +10,6 @@ dotenv.config();
 export default class Seeds implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     // CREATE ROLES
-    console.log('\nCreating Roles');
 
     const roleObjects = Role.ROLES.map((key) => ({ key }));
     const roleRepository = connection.getRepository(Role);
@@ -18,10 +17,8 @@ export default class Seeds implements Seeder {
       // only insert roles if not present already
       const role = await roleRepository.findOne(roleObj);
       if (!role) {
-        console.log(`Creating role '${roleObj.key}'`);
         await roleRepository.insert(roleObj);
       } else {
-        console.log(`Role '${role.key}' already exists`);
       }
     }
 

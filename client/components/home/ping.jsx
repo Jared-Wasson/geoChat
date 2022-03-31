@@ -25,12 +25,10 @@ export const Ping = () => {
 
     // adds event listener to the disconnection event
     socket.on('disconnect', () => {
-      console.log('Disconnected');
     });
 
     // recieved a pong event from the server
     socket.on('pong', (data) => {
-      console.log('Recieved pong', data);
     });
 
     // IMPORTANT! Unregister from all events when the component unmounts and disconnect.
@@ -61,7 +59,6 @@ export const Ping = () => {
   const joinRoom = () => {
     // tells the server to remove the current client from the current room and add them to the new room
     socket.emit('join-room', { currentRoom, newRoom: key }, (response) => {
-      console.log(response);
       setCurrentRoom(response.room);
     });
   };
