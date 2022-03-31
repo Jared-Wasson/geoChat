@@ -36,14 +36,16 @@ export const SignIn = () => {
   };
 
   return (
-    <div className="flex flex-row justify-center m-4">
+
+    <div className="flex flex-row justify-center m-4 backgroundstyle width">
       <div className="w-96">
+        <h2 className="header">Global Chat</h2>
         <Paper>
           <div>Email</div>
           <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <div>Password</div>
           <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <div className="flex flex-row justify-end mt-2">
+          <div className="flex flex-row justify-center mt-2">
             <Button type="button" onClick={goToSignUp}>
               Sign up
             </Button>

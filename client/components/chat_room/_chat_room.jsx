@@ -4,6 +4,7 @@ import { ApiContext } from '../../utils/api_context';
 
 import { Button } from '../common/button';
 import { useMessages } from '../../utils/use_messages';
+import { Paper } from '../common/paper';
 
 export const ChatRoom = () => {
   const [chatRoom, setChatRoom] = useState(null);
@@ -26,18 +27,25 @@ export const ChatRoom = () => {
   if (loading) return 'Loading...';
 
   return (
-    <div>
+    <div className="backgroundstyle width">
+      <div className="line-5"></div>
+      <h2 className="header2">Messages</h2>
+      <div className="line-5"></div>
+      <div className="news-local">
+        <textarea type="text" value={contents} onChange={(e) => setContents(e.target.value)} className="glowing-border input" placeholder="Message..."/>
+        <button className='button1 button news-local' onClick={() => {sendMessage(contents, user); setContents('')}}>Send Message</button>
+      </div>
+      <div className="scroll">
       <div>
         {messages.map((message) => (
-          <div key={message.id}>
-            <h3>{message.userName}</h3>
+          <div className="news-worlds" key={message.id}>
+            <Paper>
+            <h3 className="h3">{message.userName}</h3>
             {message.contents}
+            </Paper>
           </div>
         ))}
       </div>
-      <div>
-        <input type="text" value={contents} onChange={(e) => setContents(e.target.value)} />
-        <Button onClick={() => {sendMessage(contents, user); setContents('')}}>Send Message</Button>
       </div>
     </div>
   );

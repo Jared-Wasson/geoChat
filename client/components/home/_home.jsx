@@ -96,7 +96,7 @@ export const Home = () => {
 
 
   return (
-    <div className="background">
+    <div>
       <div className="header">
       <h1>Welcome {user.firstName}</h1>
       </div>

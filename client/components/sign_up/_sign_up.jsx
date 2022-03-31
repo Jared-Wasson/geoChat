@@ -55,7 +55,7 @@ export const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-row justify-center m-4">
+    <div className="flex flex-row justify-center m-4 backgroundstyle width">
       <div className="w-96">
         <Paper>
           <div>First Name</div>

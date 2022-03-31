@@ -26,14 +26,9 @@ export const useMessages = (chatRoom) => {
         messagesRef.current.push(message);
         setMessages([...messagesRef.current]);
       });
-      // socket.on('initial-messages', (messages) => {
-      //   console.log(messages);
-      //   messagesRef.current = messages;
-      //   setMessages(messages);
-      // });
+    
       return () => {
         socket.off('message');
-        //socket.off('initial-messages');
         socket.disconnect();
       };
     }
@@ -41,6 +36,7 @@ export const useMessages = (chatRoom) => {
   }, [chatRoom]);
 
   const sendMessage = (contents, user) => {
+    if(contents === '') return;
     socket.emit('message', {
       contents,
       userName: `${user.firstName} ${user.lastName}`,
