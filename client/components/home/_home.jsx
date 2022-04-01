@@ -3,6 +3,10 @@ import { ApiContext } from '../../utils/api_context';
 import { Button } from '../common/button';
 import { Link } from 'react-router-dom';
 import { Paper } from '../common/paper';
+import { Redirect } from 'react-router-dom';
+import { Router } from '../router';
+import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 
 export const Home = () => {
@@ -17,6 +21,7 @@ export const Home = () => {
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
 
   function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
@@ -79,12 +84,15 @@ export const Home = () => {
   }
 
   const createRoom = async () => {
+    console.log(name);
     if (name === '') {
       return;
     }
     const { chatRoom } = await api.post('/chat_rooms', { name, lat, lng });
     setRoomsInRange([...roomsInRange, chatRoom]);
     setName('');
+    navigate(`/chat_rooms/${chatRoom.id}`);
+
   };
 
   const refreshPage = () => {
